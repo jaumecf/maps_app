@@ -55,6 +55,7 @@ class _MapScreenState extends State<MapScreen> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: const [
           BtnCurrentLocation(),
+          BtnFollowUser(),
         ],
       ),
     );

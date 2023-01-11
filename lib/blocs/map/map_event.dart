@@ -11,3 +11,8 @@ class OnMapInitializedEvent extends MapEvent {
   final GoogleMapController controller;
   const OnMapInitializedEvent(this.controller);
 }
+
+class OnFollowingUser extends MapEvent {
+  final bool isFollowingUser;
+  const OnFollowingUser(this.isFollowingUser);
+}

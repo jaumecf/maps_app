@@ -20,6 +20,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     });
 
     on<OnMapInitializedEvent>(_onInitMap);
+    on<OnFollowingUser>(_onFollowingUser);
 
     locationBloc.stream.listen((locationState) {
       if (!state.isFollowingUser) return;
@@ -32,6 +33,15 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     _mapController = event.controller;
     _mapController!.setMapStyle(jsonEncode(uberMapTheme));
     emit(state.copyWith(isMapInitialized: true));
+  }
+
+  void _onFollowingUser(OnFollowingUser event, Emitter<MapState> emit) {
+    emit(state.copyWith(followUser: event.isFollowingUser));
+    if (!event.isFollowingUser || locationBloc.state.lastKnownLocation == null)
+      return;
+    // Optimització per no haver d'esperar noves coordenades per actualitzar
+    // la posició, va directament, a la darrera posició que es sabia.
+    moveCamera(locationBloc.state.lastKnownLocation!);
   }
 
   void moveCamera(LatLng newLocation) {
