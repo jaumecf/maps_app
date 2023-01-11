@@ -8,7 +8,9 @@ void main() {
     providers: [
       BlocProvider(create: (context) => GpsBloc()),
       BlocProvider(create: (context) => LocationBloc()),
-      BlocProvider(create: ((context) => MapBloc()))
+      BlocProvider(
+          create: ((context) =>
+              MapBloc(locationBloc: BlocProvider.of<LocationBloc>(context))))
     ],
     child: const MyApp(),
   ));
