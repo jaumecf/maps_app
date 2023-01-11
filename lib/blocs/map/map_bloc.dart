@@ -22,7 +22,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     on<OnMapInitializedEvent>(_onInitMap);
 
     locationBloc.stream.listen((locationState) {
-      if (!state.followUser) return;
+      if (!state.isFollowingUser) return;
       if (locationState.lastKnownLocation == null) return;
       moveCamera(locationState.lastKnownLocation!);
     });
