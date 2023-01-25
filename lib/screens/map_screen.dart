@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:maps_app/blocs/location/location_bloc.dart';
+import 'package:maps_app/blocs/blocs.dart';
 import 'package:maps_app/views/views.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../widgets/widgets.dart';
 
@@ -32,21 +32,30 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<LocationBloc, LocationState>(
-        builder: (context, state) {
-          if (state.lastKnownLocation == null)
+        builder: (context, locationState) {
+          if (locationState.lastKnownLocation == null)
             return const Center(child: Text('Carregant les dades...'));
 
           // Envoltam el Stack amb el SingleChildScrollView per evitar que el
           // search Delegate, obri el teclat i ens molesti a la pantalla
-          return SingleChildScrollView(
-            // Recordem que l'ordre en que es col·loquen els Widgets a Stack,
-            // és que els primers, estaran més al fons.
-            child: Stack(
-              children: [
-                MapView(initialLocation: state.lastKnownLocation!),
-                // Altres Widgets...
-              ],
-            ),
+
+          //Utilitzam un altre BlocBuilder per que necessitam accedir al state de Map
+          // ja que no tenim algo semblant a MultiBlocBuilder
+          return BlocBuilder<MapBloc, MapState>(
+            builder: (context, mapState) {
+              return SingleChildScrollView(
+                // Recordem que l'ordre en que es col·loquen els Widgets a Stack,
+                // és que els primers, estaran més al fons.
+                child: Stack(
+                  children: [
+                    MapView(
+                        initialLocation: locationState.lastKnownLocation!,
+                        polylines: mapState.polylines.values.toSet()),
+                    // Altres Widgets...
+                  ],
+                ),
+              );
+            },
           );
         },
       ),

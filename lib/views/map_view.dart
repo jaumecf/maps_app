@@ -5,7 +5,11 @@ import 'package:maps_app/blocs/blocs.dart';
 
 class MapView extends StatelessWidget {
   final initialLocation;
-  const MapView({Key? key, required this.initialLocation}) : super(key: key);
+  final Set<Polyline> polylines;
+
+  const MapView(
+      {Key? key, required this.initialLocation, required this.polylines})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +36,7 @@ class MapView extends StatelessWidget {
           // Markers
           // Polylines
           // Quan es mou el mapa...
+          polylines: polylines,
 
           //Per donar estil al Google Maps emprarem onMapCreated
           onMapCreated: ((controller) =>

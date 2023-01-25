@@ -16,3 +16,8 @@ class OnFollowingUser extends MapEvent {
   final bool isFollowingUser;
   const OnFollowingUser(this.isFollowingUser);
 }
+
+class UpdateUserPolylinesEvent extends MapEvent {
+  final List<LatLng> userLocations;
+  const UpdateUserPolylinesEvent(this.userLocations);
+}
