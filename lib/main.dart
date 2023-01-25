@@ -8,6 +8,7 @@ void main() {
     providers: [
       BlocProvider(create: (context) => GpsBloc()),
       BlocProvider(create: (context) => LocationBloc()),
+      // Map Bloc té una dependència de LocationBloc
       BlocProvider(
           create: ((context) =>
               MapBloc(locationBloc: BlocProvider.of<LocationBloc>(context))))
