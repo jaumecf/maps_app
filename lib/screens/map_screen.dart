@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:maps_app/blocs/blocs.dart';
 import 'package:maps_app/views/views.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:maps_app/widgets/btn_toggle_user_route.dart';
 
 import '../widgets/widgets.dart';
 
@@ -43,14 +45,20 @@ class _MapScreenState extends State<MapScreen> {
           // ja que no tenim algo semblant a MultiBlocBuilder
           return BlocBuilder<MapBloc, MapState>(
             builder: (context, mapState) {
+              Map<String, Polyline> polylines = Map.from(mapState.polylines);
+              if (!mapState.showMyRoute) {
+                polylines.removeWhere((key, value) => key == 'myRoute');
+              }
               return SingleChildScrollView(
                 // Recordem que l'ordre en que es col·loquen els Widgets a Stack,
                 // és que els primers, estaran més al fons.
                 child: Stack(
                   children: [
                     MapView(
-                        initialLocation: locationState.lastKnownLocation!,
-                        polylines: mapState.polylines.values.toSet()),
+                      initialLocation: locationState.lastKnownLocation!,
+                      //polylines: mapState.polylines.values.toSet(),
+                      polylines: polylines.values.toSet(),
+                    ),
                     // Altres Widgets...
                   ],
                 ),
@@ -63,6 +71,7 @@ class _MapScreenState extends State<MapScreen> {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: const [
+          BtnToggleUserRoute(),
           BtnCurrentLocation(),
           BtnFollowUser(),
         ],

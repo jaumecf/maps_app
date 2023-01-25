@@ -1,0 +1,28 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:maps_app/blocs/blocs.dart';
+
+class BtnToggleUserRoute extends StatelessWidget {
+  const BtnToggleUserRoute({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final mapBloc = BlocProvider.of<MapBloc>(context);
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      child: CircleAvatar(
+        backgroundColor: Colors.deepPurpleAccent,
+        maxRadius: 25,
+        child: IconButton(
+          icon: Icon(Icons.route_outlined),
+          onPressed: () {
+            // TODO: El botó lo únic que ha de fer, es anar canviant
+            // el valor de la variable isFollowingUser del Bloc
+            mapBloc.add(OnToggleUserRoute());
+          },
+        ),
+      ),
+    );
+  }
+}
